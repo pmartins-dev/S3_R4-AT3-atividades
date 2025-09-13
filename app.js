@@ -2,9 +2,10 @@ const express = require('express');
 const app = express();
 const PORT = 8080;
 
-app.get("/calculadora", (req, res)=>{
+app.get("/operacao/:tipo", (req, res)=>{
     try {
-        const {operador, numUm, numDois} = req.query;
+        const {tipo} = req.params;
+        const {numUm, numDois} = req.query;
 
         if(isNaN(numUm) || numUm == undefined || numUm == null || isNaN(numDois) || numDois == undefined || numDois == null ){
             return res.status(400).send(`Entrada de número inválido!`);
@@ -14,7 +15,7 @@ app.get("/calculadora", (req, res)=>{
         const numeroDois = parseFloat(numDois);
         let resultado;
 
-        switch (operador) {
+        switch (tipo) {
             case "soma":
                 resultado = numeroUm + numeroDois;
                 break;
