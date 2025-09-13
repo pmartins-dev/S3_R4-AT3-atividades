@@ -65,7 +65,7 @@ app.get("/divisao/:numUm/:numDois", (req, res)=>{
         }
         const numeroUm = parseFloat(numUm);
         const numeroDois = parseFloat(numDois);
-        const divisao = numeroUm - numeroDois;
+        const divisao = numeroUm / numeroDois;
         res.status(200).send(`Divisão realizada dos números ${numeroUm} / ${numeroDois} = ${divisao}`)
     } catch (error) {
         console.error(`Erro reportado:`, error);
