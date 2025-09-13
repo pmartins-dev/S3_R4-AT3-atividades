@@ -2,77 +2,57 @@ const express = require('express');
 const app = express();
 const PORT = 8080;
 
-app.get("/soma/:numUm/:numDois", (req, res)=>{
-
+app.get("/calculadora", (req, res)=>{
     try {
-        const {numUm, numDois} = req.params;
-        if(isNaN(numUm) || numUm == undefined || numUm == null || isNaN(numDois) || numDois == undefined || numDois == null){
-            return res.status(400).send(`Os valores recebidos não são números ou estão incompletos.`)
+        const {operador, numUm, numDois} = req.query;
+
+        if(isNaN(numUm) || numUm == undefined || numUm == null || isNaN(numDois) || numDois == undefined || numDois == null ){
+            return res.status(400).send(`Entrada de número inválido!`);
         }
+
         const numeroUm = parseFloat(numUm);
         const numeroDois = parseFloat(numDois);
-        const soma = numeroUm + numeroDois;
-        res.status(200).send(`Soma realizada dos números ${numeroUm} + ${numeroDois} = ${soma}`)
-    } catch (error) {
-        console.error(`Erro reportado:`, error);
-        res.status(500).send(`Erro interno no servidor!`);
-    }
+        let resultado;
 
-});
+        switch (operador) {
+            case "soma":
+                resultado = numeroUm + numeroDois;
+                break;
 
-app.get("/subtracao/:numUm/:numDois", (req, res)=>{
+            case "subtracao":
+                if(numeroDois < 0 ){
+                    return res.status(405).send(`Segundo numero não pode ser menor que zero!`)
+                }
+                resultado = (numeroUm) - numeroDois;
+                break;
 
-    try {
-        const {numUm, numDois} = req.params;
-        if(isNaN(numUm) || numUm == undefined || numUm == null || isNaN(numDois) || numDois == undefined || numDois == null){
-            return res.status(400).send(`Os valores recebidos não são números ou estão incompletos.`)
+            case "multiplicacao":
+                resultado = numeroUm * numeroDois;
+                break;
+
+            case "divisao":
+                // tratamento de erro para divisão por 0
+                if(numeroDois === 0 ){    
+                    res.status(400).send(`Não é possivel fazer divisão por zero!`)
+                }
+                
+                resultado = numeroUm / numeroDois;
+                break;
+        
+            default:
+                return res.status(400).send('Operador invalido');
+                break;
         }
-        const numeroUm = parseFloat(numUm);
-        const numeroDois = parseFloat(numDois);
-        const subtracao = numeroUm - numeroDois;
-        res.status(200).send(`Subtração realizada dos números ${numeroUm} - ${numeroDois} = ${subtracao}`)
-    } catch (error) {
-        console.error(`Erro reportado:`, error);
-        res.status(500).send(`Erro interno no servidor!`);
-    }
 
-});
+        res.send(`Resultado é ${resultado}`);
 
-app.get("/mutiplicacao/:numUm/:numDois", (req, res)=>{
-
-    try {
-        const {numUm, numDois} = req.params;
-        if(isNaN(numUm) || numUm == undefined || numUm == null || isNaN(numDois) || numDois == undefined || numDois == null){
-            return res.status(400).send(`Os valores recebidos não são números ou estão incompletos.`)
+        } catch (error) {
+            console.error("Erro ao processar operação matematica:", error);
+            res.status(500).send(`Ocorreu um erro no servidor`)
         }
-        const numeroUm = parseFloat(numUm);
-        const numeroDois = parseFloat(numDois);
-        const mutiplicacao = numeroUm * numeroDois;
-        res.status(200).send(`Mutiplicação realizada dos números ${numeroUm} X ${numeroDois} = ${mutiplicacao}`)
-    } catch (error) {
-        console.error(`Erro reportado:`, error);
-        res.status(500).send(`Erro interno no servidor!`);
-    }
-
 });
 
-app.get("/divisao/:numUm/:numDois", (req, res)=>{
 
-    try {
-        const {numUm, numDois} = req.params;
-        if(isNaN(numUm) || numUm == undefined || numUm == null || isNaN(numDois) || numDois == undefined || numDois == null){
-            return res.status(400).send(`Os valores recebidos não são números ou estão incompletos.`)
-        }
-        const numeroUm = parseFloat(numUm);
-        const numeroDois = parseFloat(numDois);
-        const divisao = numeroUm / numeroDois;
-        res.status(200).send(`Divisão realizada dos números ${numeroUm} / ${numeroDois} = ${divisao}`)
-    } catch (error) {
-        console.error(`Erro reportado:`, error);
-        res.status(500).send(`Erro interno no servidor!`);
-    }
-
-});
 
 app.listen(PORT, ()=>{
     console.log(`Servidor rodando na porta ${PORT}`);

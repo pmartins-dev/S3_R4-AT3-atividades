@@ -8,8 +8,16 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "express": "^5.1.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pmartins-dev/S3_R4-AT3-atividades.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pmartins-dev/S3_R4-AT3-atividades/issues"
+  },
+  "homepage": "https://github.com/pmartins-dev/S3_R4-AT3-atividades#readme",
+  "description": ""
 }
