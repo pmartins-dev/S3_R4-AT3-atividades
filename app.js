@@ -34,7 +34,7 @@ app.get("/operacao/:tipo", (req, res)=>{
             case "divisao":
                 // tratamento de erro para divisão por 0
                 if(numeroDois === 0 ){    
-                    res.status(400).send(`Não é possivel fazer divisão por zero!`)
+                    return res.status(400).send(`Não é possivel fazer divisão por zero!`)
                 }
                 
                 resultado = numeroUm / numeroDois;
